@@ -6,143 +6,205 @@ using System.Threading.Tasks;
 
 class Program
 {
-    // Variables que almacenan los datos de la computadora
-    static bool pcLenta;
-    static double espacioDisco;
-    static double usoRAM;
-    static bool programasLentos;
-    static bool erroresDisco;
+    // 1. VARIABLES DE ENTRADA
+
+    // A: Computadora lenta
+    static bool A = true;
+
+    // B: Espacio disponible en disco
+    static double B = 10;
+
+    // C: Uso de memoria RAM
+    static double C = 95;
+
+    // D: Programas lentos
+    static bool D = true;
+
+    // E: Errores en el disco
+    static bool E = true;
+
+    // 2. VARIABLES DE SALIDA
+
+    // F: Diagnostico de almacenamiento insuficiente
+    static bool F = false;
+
+    // G: Diagnostico de consumo elevado de RAM
+    static bool G = false;
+
+    // H: Recomendacion para liberar espacio
+    static bool H = false;
+
+    // I: Recomendacion para liberar memoria RAM
+    static bool I = false;
+
+    // J: Recomendacion para comprobar el disco
+    static bool J = false;
+
+    // 3. LISTA DE HECHOS
+
+    static List<string> listaHechos = new List<string>();
+
+    // 4. PROGRAMA PRINCIPAL
 
     static void Main(string[] args)
     {
-        Console.WriteLine("==========================================");
-        Console.WriteLine(" SISTEMA EXPERTO - OPTIMIZACION DE PC");
-        Console.WriteLine("==========================================");
+        Console.WriteLine("==============================================");
+        Console.WriteLine("   SISTEMA EXPERTO PARA OPTIMIZAR UNA PC");
+        Console.WriteLine("==============================================");
 
-        // Captura de información
-        Console.WriteLine("\n--- DATOS DE LA COMPUTADORA ---");
+        // Registrar los hechos iniciales
+        RegistrarHechosIniciales();
 
-        pcLenta = LeerSiNo("¿La computadora presenta lentitud? (s/n): ");
+        // Mostrar los datos analizados
+        Console.WriteLine("\n--- ESTADO DE LA COMPUTADORA ---");
 
-        Console.Write("¿Cuanto espacio disponible tiene el disco? (%): ");
-        espacioDisco = LeerNumero();
+        Console.WriteLine("A - Computadora lenta: " + (A ? "Si" : "No"));
+        Console.WriteLine("B - Espacio disponible en disco: " + B + "%");
+        Console.WriteLine("C - Uso de memoria RAM: " + C + "%");
+        Console.WriteLine("D - Programas lentos: " + (D ? "Si" : "No"));
+        Console.WriteLine("E - Errores en disco: " + (E ? "Si" : "No"));
 
-        Console.Write("¿Que porcentaje de memoria RAM esta utilizando? (%): ");
-        usoRAM = LeerNumero();
-
-        programasLentos = LeerSiNo(
-            "¿Los programas responden lentamente? (s/n): ");
-
-        erroresDisco = LeerSiNo(
-            "¿Se han detectado errores en el disco? (s/n): ");
-
-        // Evaluación de las reglas
+        // Ejecutar el motor de inferencia
         EvaluarReglas();
 
-        Console.WriteLine("\n==========================================");
-        Console.WriteLine(" Presione una tecla para salir...");
+        // Mostrar los hechos generados
+        MostrarListaHechos();
+
+        // Mostrar las variables de salida
+        MostrarVariablesSalida();
+
+        Console.WriteLine("\n==============================================");
+        Console.WriteLine(" ANALISIS FINALIZADO");
+        Console.WriteLine("==============================================");
+
         Console.ReadKey();
     }
 
-    // Método para evaluar las cinco reglas
+    // 5. REGISTRO DE HECHOS INICIALES
+ 
+    static void RegistrarHechosIniciales()
+    {
+        if (A == true)
+            listaHechos.Add("A: Computadora lenta");
+
+        if (B < 15)
+            listaHechos.Add("B: Espacio disponible en disco menor al 15%");
+
+        if (C > 90)
+            listaHechos.Add("C: Uso de memoria RAM mayor al 90%");
+
+        if (D == true)
+            listaHechos.Add("D: Programas lentos");
+
+        if (E == true)
+            listaHechos.Add("E: Errores detectados en el disco");
+    }
+
+    // 6. MOTOR DE INFERENCIA
+
     static void EvaluarReglas()
     {
-        bool seActivoUnaRegla = false;
+        bool reglaActivada = false;
 
-        Console.WriteLine("\n========== RESULTADOS ==========");
+        Console.WriteLine("\n--- EVALUACION DE LAS REGLAS ---");
 
-        // REGLA 1: Diagnóstico de almacenamiento
-        if (pcLenta == true && espacioDisco < 15)
+
+        // REGLA 1: A Y B -> F
+        if (A == true && B < 15)
         {
             Console.WriteLine("\n[R1] DIAGNOSTICO:");
             Console.WriteLine("Almacenamiento insuficiente.");
-            seActivoUnaRegla = true;
+
+            F = true;
+            listaHechos.Add("F: Diagnostico de almacenamiento insuficiente");
+
+            reglaActivada = true;
         }
 
-        // REGLA 2: Diagnóstico de memoria RAM
-        if (usoRAM > 90 && programasLentos == true)
+
+        // REGLA 2: C Y D -> G
+        if (C > 90 && D == true)
         {
             Console.WriteLine("\n[R2] DIAGNOSTICO:");
             Console.WriteLine("Consumo elevado de memoria RAM.");
-            seActivoUnaRegla = true;
+
+            G = true;
+            listaHechos.Add("G: Diagnostico de consumo elevado de RAM");
+
+            reglaActivada = true;
         }
 
-        // REGLA 3: Recomendación de almacenamiento
-        if (espacioDisco < 15)
+
+        // REGLA 3: B -> H
+        if (B < 15)
         {
-            Console.WriteLine("\n[R3] RECOMENDACION:");
+            Console.WriteLine("\n[R3] ACCION:");
             Console.WriteLine("Eliminar archivos temporales y liberar espacio.");
-            seActivoUnaRegla = true;
+
+            H = true;
+            listaHechos.Add("H: Recomendar eliminar archivos temporales");
+
+            reglaActivada = true;
         }
 
-        // REGLA 4: Recomendación de memoria RAM
-        if (usoRAM > 90)
+
+        // REGLA 4: C -> I
+        if (C > 90)
         {
-            Console.WriteLine("\n[R4] RECOMENDACION:");
+            Console.WriteLine("\n[R4] ACCION:");
             Console.WriteLine("Cerrar programas innecesarios para liberar RAM.");
-            seActivoUnaRegla = true;
+
+            I = true;
+            listaHechos.Add("I: Recomendar cerrar programas innecesarios");
+
+            reglaActivada = true;
         }
 
-        // REGLA 5: Recomendación de revisión del disco
-        if (erroresDisco == true)
+
+        // REGLA 5: E -> J
+        if (E == true)
         {
-            Console.WriteLine("\n[R5] RECOMENDACION:");
-            Console.WriteLine("Ejecutar una herramienta de comprobacion del sistema de archivos.");
-            seActivoUnaRegla = true;
+            Console.WriteLine("\n[R5] ACCION:");
+            Console.WriteLine("Ejecutar una herramienta de comprobacion del disco.");
+
+            J = true;
+            listaHechos.Add("J: Recomendar comprobar el sistema de archivos");
+
+            reglaActivada = true;
         }
 
-        // Si ninguna regla se cumple
-        if (seActivoUnaRegla == false)
+
+        // Verificar si alguna regla se activo
+        if (reglaActivada == false)
         {
-            Console.WriteLine("\nNo se encontraron problemas segun las reglas establecidas.");
-            Console.WriteLine("La computadora presenta condiciones normales.");
-        }
-
-        Console.WriteLine("\n================================");
-    }
-
-    // Método para leer respuestas de tipo SI o NO
-    static bool LeerSiNo(string mensaje)
-    {
-        string respuesta;
-
-        while (true)
-        {
-            Console.Write(mensaje);
-            respuesta = Console.ReadLine().Trim().ToLower();
-
-            if (respuesta == "s")
-            {
-                return true;
-            }
-            else if (respuesta == "n")
-            {
-                return false;
-            }
-            else
-            {
-                Console.WriteLine("Ingrese solamente s o n.");
-            }
+            Console.WriteLine("\nNo se detectaron problemas.");
+            Console.WriteLine("El rendimiento de la PC parece normal.");
         }
     }
 
-    // Método para leer valores numéricos
-    static double LeerNumero()
+    // 7. MOSTRAR LISTA DE HECHOS
+
+    static void MostrarListaHechos()
     {
-        double numero;
+        Console.WriteLine("\n--- LISTA DE HECHOS ---");
 
-        while (true)
+        foreach (string hecho in listaHechos)
         {
-            string entrada = Console.ReadLine();
-
-            if (double.TryParse(entrada, out numero)
-                && numero >= 0 && numero <= 100)
-            {
-                return numero;
-            }
-
-            Console.Write("Ingrese un numero entre 0 y 100: ");
+            Console.WriteLine(hecho);
         }
+    }
+
+    // 8. MOSTRAR VARIABLES DE SALIDA
+
+    static void MostrarVariablesSalida()
+    {
+        Console.WriteLine("\n--- VARIABLES DE SALIDA ---");
+
+        Console.WriteLine("F - Almacenamiento insuficiente: " + F);
+        Console.WriteLine("G - Consumo elevado de RAM: " + G);
+        Console.WriteLine("H - Liberar espacio en disco: " + H);
+        Console.WriteLine("I - Optimizar memoria RAM: " + I);
+        Console.WriteLine("J - Comprobar errores del disco: " + J);
     }
 }
 
